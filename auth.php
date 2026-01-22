@@ -25,8 +25,7 @@ foreach ($errors as $error) {
     }
 }
 
-/* Dummy authentication */
-/* In-app authentication (demo) */
+
 
 $authenticatedUser = null;
 

@@ -1,5 +1,5 @@
 <?php
-
+// acts as an database layer 
 return [
     [
         'id' => 1,
