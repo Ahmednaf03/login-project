@@ -2,25 +2,28 @@
 session_start();
 require 'includes/validation.php';
 $users = require 'includes/users.php';
+// getting the value from form
 $username = $_POST['username'] ?? '';
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
-$remember = isset($_POST['remember']);
+$remember = isset($_POST['remember']);  // remember me checkbox
 
+//validate fields and store errors
 $errors = [
     validateUsername($username),
     validateEmail($email),
     validatePassword($password)
 ];
 
+
 foreach ($errors as $error) {
     if ($error) {
-        $_SESSION['error'] = $error;
+        $_SESSION['error'] = $error; // setting error message in session
          $_SESSION['old'] = [
-        'username' => $username,
+        'username' => $username, // storing old input values for persistence between relaod
         'email' => $email
     ];
-        header("Location: login.php");
+        header("Location: login.php"); // redirect to login page
         exit;
     }
 }
@@ -28,7 +31,7 @@ foreach ($errors as $error) {
 
 
 $authenticatedUser = null;
-
+// login validation with data layer
 foreach ($users as $user) {
     if (
         ($user['email'] === $email || $user['username'] === $username) &&
@@ -38,7 +41,7 @@ foreach ($users as $user) {
         break;
     }
 }
-
+// if user is authenticated
 if ($authenticatedUser) {
 
     $theme = $authenticatedUser['theme'];
@@ -46,7 +49,7 @@ if ($authenticatedUser) {
     $_SESSION['username'] = $authenticatedUser['username'];
     $_SESSION['email'] = $authenticatedUser['email'];
     $_SESSION['theme'] = $theme;
-
+    // remember me checkbox
     if ($remember) {
         setcookie("remember_username", $authenticatedUser['username'], time() + 60);
         setcookie("user_theme", $theme, time() + 60);
@@ -54,12 +57,12 @@ if ($authenticatedUser) {
         setcookie("remember_username", "", time() - 3600);
     }
 
-    header("Location: dashboard.php");
+    header("Location: dashboard.php"); // if validated redirect to dashboard
     exit;
 }else{
     
 $_SESSION['error'] = "Invalid login credentials";
-header("Location: login.php");
+header("Location: login.php"); // if not authenticated redirect to login
 exit;
 }
 

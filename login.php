@@ -1,13 +1,12 @@
 <?php
-session_start();
-$old = $_SESSION['old'] ?? [];
-$error = $_SESSION['error'] ?? '';
+session_start(); // initialize session
+$old = $_SESSION['old'] ?? []; // retrieve old input values
 
-$username = $old['username'] ?? ($_COOKIE['remember_username'] ?? '');
-$theme = $_COOKIE['user_theme'] ?? 'light';
-$email = $old['email'] ?? '';
-$error = $_SESSION['error'] ?? '';
-unset($_SESSION['old'], $_SESSION['error']);
+$username = $old['username'] ?? ($_COOKIE['remember_username'] ?? ''); // use old username or cookie or default to empty
+$theme = $_COOKIE['user_theme'] ?? 'light'; // use theme from cookie or default to light
+$email = $old['email'] ?? ''; // use old email or default to empty
+$error = $_SESSION['error'] ?? ''; // retrieve error message
+unset($_SESSION['old'], $_SESSION['error']); // clear old input values and error message from session
 ?>
 
 <!DOCTYPE html>
