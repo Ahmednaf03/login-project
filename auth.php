@@ -56,24 +56,14 @@ if ($authenticatedUser) {
 
     header("Location: dashboard.php");
     exit;
-}
-
-
-    $_SESSION['username'] = $username;
-    $_SESSION['email'] = $email;
-    $_SESSION['theme'] = $theme;
-
-    if ($remember) {
-        setcookie("remember_username", $username, time() + 60);
-        setcookie("user_theme", $theme, time() + 60);
-    } else {
-        setcookie("remember_username", "", time() - 3600);
-    }
-
-    header("Location: dashboard.php");
-    exit;
-
-
+}else{
+    
 $_SESSION['error'] = "Invalid login credentials";
 header("Location: login.php");
 exit;
+}
+
+
+
+
+
