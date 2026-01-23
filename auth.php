@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'includes/validation.php';
+require 'includes/helpers.php';
 $users = require 'includes/users.php';
 // getting the value from form
 $username = $_POST['username'] ?? '';
@@ -34,12 +35,19 @@ $authenticatedUser = null;
 // login validation with data layer
 foreach ($users as $user) {
     if (
-        ($user['email'] === $email || $user['username'] === $username) &&
+        ($user['email'] === $email && $user['username'] === $username) &&
         $user['password'] === $password
     ) {
         $authenticatedUser = $user;
         break;
     }
+
+     if (
+        ($user['email'] === $email || $user['username'] === $username) ||
+        $user['password'] === $password
+        ) {
+        $_SESSION['error'] = validator($username,$email,$password,$user) ;
+        }
 }
 // if user is authenticated
 if ($authenticatedUser) {
@@ -54,14 +62,18 @@ if ($authenticatedUser) {
         setcookie("remember_username", $authenticatedUser['username'], time() + 60);
         setcookie("user_theme", $theme, time() + 60);
     } else {
-        setcookie("remember_username", "", time() - 3600);
+        setcookie("remember_username", "", time() - 60);
     }
 
     header("Location: dashboard.php"); // if validated redirect to dashboard
     exit;
 }else{
     
-$_SESSION['error'] = "Invalid login credentials";
+// $_SESSION['error'] = "Invalid login credentials";
+ $_SESSION['old'] = [
+        'username' => $username, // storing old input values for persistence between relaod
+        'email' => $email
+    ];
 header("Location: login.php"); // if not authenticated redirect to login
 exit;
 }

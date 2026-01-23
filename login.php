@@ -18,7 +18,7 @@ unset($_SESSION['old'], $_SESSION['error']); // clear old input values and error
 
 <body class="bg-<?php echo $theme === 'dark' ? 'dark text-white' : 'light'; ?>">
 <div class="container mt-5">
-    <div class="col-md-6 mx-auto">
+    <div class="col-md-4 mx-auto">
         <div class="card p-4">
             <h3 class="text-center">Login</h3>
 
